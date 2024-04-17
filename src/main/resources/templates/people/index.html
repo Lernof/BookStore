@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th = "https://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8">
+    <title>People</title>
+    <style>
+        /* Define your styles here */
+        .not-outdated {
+            /* Define styles for non-outdated books */
+        }
+        .outdated {
+            /* Define styles for outdated books */
+            color: red;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+<p th:text="${person.getFull_name()} + ', ' + ${person.getYear_of_birth()} + ', ' + ${person.getId()}"></p>
+<hr/>
+<div th:if="${books != null}">
+    <div th:each="book: ${books}" th:attr="class=${book.isOutdated() == true ? 'outdated' : 'non-outdated'}">
+        <p th:text="${book.getName()}"></p>
+    </div>
+</div>
+
+<div th:if="${#lists.size(books) == 0}">
+    <p>This person doesn't own any book</p>
+</div>
+<hr/>
+<a th:href="@{{id}/edit(id=${person.getId()})}">
+    <button>Edit</button>
+</a>
+<hr/>
+<form th:method="DELETE" th:action="@{{id}(id=${person.getId()})}">
+    <input type="submit" value="Delete">
+</form>
+<a th:href="@{/edit}"></a>
+</body>
+</html>
