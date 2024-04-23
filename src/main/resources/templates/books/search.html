@@ -14,7 +14,7 @@
 <div th:if="${books!=null}">
     <div th:each="book : ${books}">
         <p th:text="${book.getName()}"></p>
-        <p th:if="${book.getOwner()!=null}" th:text="'Book to borrowed by: ' + ${book.owner.full_name}"></p>
+        <p th:if="${book.getOwner()!=null}" th:text="'Book to borrowed by: ' + ${book.owner.fullName}"></p>
         <p th:if="${book.getOwner()==null}">This book is free</p>
         <hr/>
     </div>

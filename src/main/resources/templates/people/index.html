@@ -16,7 +16,7 @@
     </style>
 </head>
 <body>
-<p th:text="${person.getFull_name()} + ', ' + ${person.getYear_of_birth()} + ', ' + ${person.getId()}"></p>
+<p th:text="${person.getFullName()} + ', ' + ${person.getYear_of_birth()} + ', ' + ${person.getId()}"></p>
 <hr/>
 <div th:if="${books != null}">
     <div th:each="book: ${books}" th:attr="class=${book.isOutdated() == true ? 'outdated' : 'non-outdated'}">
