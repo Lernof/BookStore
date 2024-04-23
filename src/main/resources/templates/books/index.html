@@ -7,7 +7,7 @@
 <body>
 <p th:text="${book.getName()} + ', ' + ${book.getAuthor()} + ', ' + ${book.getYear()}"></p>
 <div th:if="${person != null}">
-    <p th:text="'This book taken by: ' + ${person.getFullName()}"></p>
+    <p th:text="'This book taken by: ' + ${person.getFull_name()}"></p>
     <form th:method="PATCH" th:action="@{/books/release}" th:object="${book}">
         <input type="hidden" th:name="book_id" th:value="${book.getId()}">
         <input type="submit" value="Release">
@@ -19,7 +19,7 @@
     <form th:method="PATCH" th:action="@{/books/borrow}">
         <input type="hidden" th:name="book_id" th:value="${book.getId()}">
         <select id="selected_person" name="selected_person">
-            <option th:each="person : ${people}" th:value="${person.getId()}" th:text="${person.getFullName()}"></option>
+            <option th:each="person : ${people}" th:value="${person.getId()}" th:text="${person.getFull_name()}"></option>
         </select>
         <input type="submit" value="Assign">
     </form>

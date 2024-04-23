@@ -35,7 +35,6 @@ public class PeopleService{
         return peopleRepository.findAllBooks(id);
     }
 
-    @Transactional
     public void createPerson(Person person){
         peopleRepository.save(person);
     }
@@ -46,7 +45,7 @@ public class PeopleService{
         if(person.isPresent()){
             Person newPerson = person.get();
             newPerson.setId(id);
-            newPerson.setFullName(updatedPerson.getFullName());
+            newPerson.setFull_name(updatedPerson.getFull_name());
             newPerson.setBooks(updatedPerson.getBooks());
             newPerson.setYear_of_birth(updatedPerson.getYear_of_birth());
             peopleRepository.save(newPerson);

@@ -7,20 +7,14 @@
 <body>
 <form th:method="POST" th:action="@{/people/new}" th:object="${person}">
     <label for="name">Enter name: </label>
-    <input type="text" id="name" th:field="*{fullName}">
-    <div style="color: darkred" th:if="${#fields.hasErrors('full_name')}" th:errors="*{fullName}">
+    <input type="text" id="name" th:field="*{full_name}">
+    <div style="color: darkred" th:if="${#fields.hasErrors('full_name')}" th:errors="*{full_name}">
         fullName Error
     </div>
     <br/>
     <label for="YearOfBirth">Enter Year Of Birth</label>
     <input type="text" id="YearOfBirth" th:field="*{year_of_birth}">
     <div style="color: darkred" th:if="${#fields.hasErrors('year_of_birth')}" th:errors="*{year_of_birth}">
-        fullName Error
-    </div>
-    <br/>
-    <label for="password">Enter password</label>
-    <input type="text" id="password" th:field="*{password}">
-    <div style="color: darkred" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">
         fullName Error
     </div>
     <br/>
