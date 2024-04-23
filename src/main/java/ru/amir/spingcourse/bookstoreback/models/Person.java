@@ -85,4 +85,13 @@ public class Person {
         return year_of_birth;
     }
 
+    @Override
+    public String toString() {
+        return "Person{" +
+                "id=" + id +
+                ", fullName='" + fullName + '\'' +
+                ", year_of_birth=" + year_of_birth +
+                ", password='" + password + '\'' +
+                '}';
+    }
 }
