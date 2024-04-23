@@ -1,14 +1,17 @@
 package ru.amir.spingcourse.bookstoreback.services;
 
-import jakarta.validation.constraints.AssertTrue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
+import ru.amir.spingcourse.bookstoreback.models.Person;
 import ru.amir.spingcourse.bookstoreback.repositories.PeopleRepository;
+import ru.amir.spingcourse.bookstoreback.security.PersonDetails;
 
-@Component
+import java.util.Optional;
+
+@Service
 public class PersonDetailsService implements UserDetailsService {
     private final PeopleRepository peopleRepository;
 
@@ -19,6 +22,10 @@ public class PersonDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-
+        Optional<Person> person = peopleRepository.findByFullName(username);
+        if(person.isEmpty()){
+            throw new UsernameNotFoundException("User Not Found");
+        }
+        return new PersonDetails(person.get());
     }
 }

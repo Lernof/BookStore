@@ -14,6 +14,5 @@ import java.util.Optional;
 public interface PeopleRepository extends JpaRepository<Person, Integer> {
     @Query(value = "FROM Book b WHERE b.owner.id = :value")
     List<Book> findAllBooks(@Param("value") int id);
-
-    Optional<Person> findByFull_name(String name);
+    Optional<Person> findByFullName(String name);
 }

@@ -22,22 +22,33 @@ public class Person {
     @NotNull
     @Size(max=255, message = "Your full name can't be larger then 255 letters")
     @Column(name = "full_name")
-    private String full_name;
+    private String fullName;
 
     @NotNull(message="This filed can't be empty")
     @Min(value = 1900, message = "Your date of birth can't be earlyer than 1900")
     @Column(name = "year_of_birth")
     private int year_of_birth;
 
+    @Column(name = "password")
+    private String password;
+
     @OneToMany(mappedBy = "owner")
     private List<Book> books;
 
     public Person(String full_name, int year_of_birth) {
-        this.full_name = full_name;
+        this.fullName = full_name;
         this.year_of_birth = year_of_birth;
     }
 
     public Person() {
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public List<Book> getBooks() {
@@ -52,8 +63,8 @@ public class Person {
         this.id = id;
     }
 
-    public void setFull_name(String full_name) {
-        this.full_name = full_name;
+    public void setFullName(String full_name) {
+        this.fullName = full_name;
     }
 
     public void setYear_of_birth(int year_of_birth) {
@@ -64,8 +75,8 @@ public class Person {
         return id;
     }
 
-    public String getFull_name() {
-        return full_name;
+    public String getFullName() {
+        return fullName;
     }
 
     public int getYear_of_birth() {
