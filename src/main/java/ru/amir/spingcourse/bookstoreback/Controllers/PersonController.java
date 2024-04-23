@@ -2,20 +2,12 @@ package ru.amir.spingcourse.bookstoreback.Controllers;
 
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import ru.amir.spingcourse.bookstoreback.config.SecurityConfig;
 import ru.amir.spingcourse.bookstoreback.dao.PersonDAO;
 import ru.amir.spingcourse.bookstoreback.models.Person;
-import ru.amir.spingcourse.bookstoreback.security.PersonDetails;
 import ru.amir.spingcourse.bookstoreback.services.PeopleService;
 
 @Controller
@@ -34,9 +26,6 @@ public class PersonController {
     @GetMapping()
     public String showPeople(Model model){
 //        model.addAttribute("people", personDAO.getAllPeople());
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        PersonDetails personDetails = (PersonDetails) authentication.getPrincipal();
-        System.out.println(personDetails.getPerson());
         model.addAttribute("people", peopleService.findAll());
         return "people/show";
     }
