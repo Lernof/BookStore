@@ -1,6 +1,7 @@
 package ru.amir.spingcourse.bookstoreback.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.amir.spingcourse.bookstoreback.models.Book;
@@ -14,12 +15,13 @@ import java.util.Optional;
 @Service
 @Transactional(readOnly = true)
 public class PeopleService{
-
+    private final BCryptPasswordEncoder passwordEncoder;
     private final PeopleRepository peopleRepository;
 
     @Autowired
-    public PeopleService(PeopleRepository peopleRepository) {
+    public PeopleService(PeopleRepository peopleRepository, BCryptPasswordEncoder passwordEncoder) {
         this.peopleRepository = peopleRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public List<Person> findAll(){
@@ -35,6 +37,11 @@ public class PeopleService{
         return peopleRepository.findAllBooks(id);
     }
 
+    public String encodePassword(String password) {
+        return passwordEncoder.encode(password);
+    }
+
+    @Transactional
     public void createPerson(Person person){
         peopleRepository.save(person);
     }
