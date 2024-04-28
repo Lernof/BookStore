@@ -25,7 +25,6 @@ public class PersonController {
 
     @GetMapping()
     public String showPeople(Model model){
-//        model.addAttribute("people", personDAO.getAllPeople());
         model.addAttribute("people", peopleService.findAll());
         return "people/show";
     }

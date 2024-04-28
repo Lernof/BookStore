@@ -35,8 +35,8 @@ public class Person {
     @OneToMany(mappedBy = "owner")
     private List<Book> books;
 
-    public Person(String full_name, int year_of_birth) {
-        this.fullName = full_name;
+    public Person(String fullName, int year_of_birth) {
+        this.fullName = fullName;
         this.year_of_birth = year_of_birth;
     }
 

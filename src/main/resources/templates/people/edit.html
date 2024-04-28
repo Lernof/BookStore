@@ -8,7 +8,7 @@
 <form th:method="PATCH" th:action="@{/people/{id}/edit(id=${person.getId()})}" th:object="${person}">
     <label for="name">Enter name: </label>
     <input type="text" id="name" th:field="*{fullName}">
-    <div style="color: darkred" th:if="${#fields.hasErrors('full_name')}" th:errors="*{fullName}">
+    <div style="color: darkred" th:if="${#fields.hasErrors('fullName')}" th:errors="*{fullName}">
         fullName Error
     </div>
     <br/>
