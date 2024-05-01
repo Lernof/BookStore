@@ -25,11 +25,20 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests((authorize) -> authorize
                         .requestMatchers("/auth/register").permitAll()
-                        .requestMatchers("/auth*").permitAll()
+                        .requestMatchers("/static/**").permitAll()
+                        .requestMatchers("/images/**").permitAll()
+                        .requestMatchers("/auth/login").permitAll()
+                        .requestMatchers("/auth/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .httpBasic(Customizer.withDefaults())
-                .formLogin(Customizer.withDefaults());
+                .formLogin(form -> form
+                                .loginPage("/auth/login")
+                                .loginProcessingUrl("/login")
+                                .defaultSuccessUrl("/welcome", true)
+                                .failureUrl("/auth/login?error=true")
+                                .permitAll()
+                        );
         return http.build();
     }
 
