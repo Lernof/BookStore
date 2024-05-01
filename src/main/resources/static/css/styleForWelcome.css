@@ -1,0 +1,52 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-color: #f2f2f2;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    background-image: url('../images/bookShelf.jpeg');
+    background-size: cover;
+    background-position: center;
+    backdrop-filter: blur(10px);
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.container {
+    max-width: 600px;
+    margin: auto;
+}
+
+h1 {
+    color: #c0c0c0;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.button-wrapper {
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);;
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    background: #d0d0d0;
+    padding: 10px;
+    height: 100%;
+    border-radius: 10px;
+}
+
+.button-wrapper .button-container {
+    margin: 0 10px;
+    background-color: #be9462;
+    border-radius: 5px;
+    padding: 10px 20px;
+}
+
+.button-wrapper .button-container a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.button-wrapper .button-container a:hover {
+    background-color: #0056b3;
+}

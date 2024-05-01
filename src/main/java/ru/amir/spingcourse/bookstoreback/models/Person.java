@@ -30,6 +30,7 @@ public class Person {
     private int year_of_birth;
 
     @Column(name = "password")
+    @NotEmpty(message="This filed can't be empty")
     private String password;
 
     @OneToMany(mappedBy = "owner")

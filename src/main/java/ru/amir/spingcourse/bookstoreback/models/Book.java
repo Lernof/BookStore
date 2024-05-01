@@ -5,9 +5,11 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 @Table(name = "book")
@@ -18,6 +20,7 @@ public class Book {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @Size(max=255, message = "author's name can't be larger than 255 signs")
+    @NotEmpty(message = "This filed can't be empty")
     @Column(name="author")
     private String author;
     @NotNull(message="This filed can't be empty")
@@ -27,9 +30,10 @@ public class Book {
     private String name;
 
     @NotNull(message="This filed can't be empty")
-    @Min(value = 1500, message = "year of publishing can't be lower then 1500")
     @Column(name = "year")
-    private int year;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @Temporal(TemporalType.DATE)
+    private Date year;
 
     @Column(name = "borrowed_at")
     @Temporal(TemporalType.TIMESTAMP)
@@ -39,7 +43,7 @@ public class Book {
     @JoinColumn(name = "person_id", referencedColumnName = "id")
     private Person owner;
 
-    public Book( String name, String author, int year) {
+    public Book( String name, String author, Date year) {
         this.author = author;
         this.year = year;
         this.name = name;
@@ -76,7 +80,7 @@ public class Book {
         this.author = author;
     }
 
-    public void setYear(int year) {
+    public void setYear(Date year) {
         this.year = year;
     }
 
@@ -92,7 +96,7 @@ public class Book {
         return author;
     }
 
-    public int getYear() {
+    public Date getYear() {
         return year;
     }
 

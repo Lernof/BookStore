@@ -55,7 +55,7 @@ public class BookController {
             return "books/new";
         }
         booksService.createBook(book);
-        return "books/show";
+        return "redirect:/books";
     }
 
     @GetMapping("/{id}/edit")

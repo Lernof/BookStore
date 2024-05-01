@@ -6,10 +6,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import ru.amir.spingcourse.bookstoreback.models.Person;
 import ru.amir.spingcourse.bookstoreback.services.PeopleService;
 
@@ -25,18 +22,19 @@ public class AuthController{
     }
 
     @GetMapping("/register")
-    public String registerPage(){
+    public String registerPage(Model model){
+        model.addAttribute("person", new Person());
         return "auth/register";
     }
 
     @PostMapping("/register")
-    public String registerUser(@RequestParam(name = "username") String username,
-                               @RequestParam(name = "password") String password,
-                               @RequestParam(name = "yearOfBirth") int yearOfBirth){
-        Person person = new Person(username, yearOfBirth);
-        String encryptedPassword = peopleService.encodePassword(password);
-        person.setPassword(encryptedPassword);
-        peopleService.createPerson(person);
+    public String registerUser(@Valid @ModelAttribute("person") Person newPerson,
+                               BindingResult bindingResult){
+        if(bindingResult.hasErrors()){
+            return "auth/register";
+        }
+        newPerson.setPassword(peopleService.encodePassword(newPerson.getPassword()));
+        peopleService.createPerson(newPerson);
         return "redirect:/login";
     }
 
