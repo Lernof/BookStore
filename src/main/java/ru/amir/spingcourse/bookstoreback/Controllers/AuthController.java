@@ -37,6 +37,7 @@ public class AuthController{
         String encryptedPassword = peopleService.encodePassword(password);
         person.setPassword(encryptedPassword);
         peopleService.createPerson(person);
+        System.out.println("Hello World!");
         return "redirect:/login";
     }
 
