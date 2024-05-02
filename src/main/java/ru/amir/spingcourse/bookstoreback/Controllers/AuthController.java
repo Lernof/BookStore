@@ -42,4 +42,9 @@ public class AuthController{
     public String loginPage(){
         return "auth/login";
     }
+
+    @GetMapping("/logout")
+    public String showLogoutPage() {
+        return "auth/logout";
+    }
 }

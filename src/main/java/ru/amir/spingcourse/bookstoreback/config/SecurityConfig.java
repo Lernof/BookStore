@@ -15,6 +15,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.server.authentication.logout.DelegatingServerLogoutHandler;
+import org.springframework.security.web.server.authentication.logout.SecurityContextServerLogoutHandler;
+import org.springframework.security.web.server.authentication.logout.WebSessionServerLogoutHandler;
 import ru.amir.spingcourse.bookstoreback.services.PersonDetailsService;
 
 @Configuration
@@ -23,6 +26,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+                .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests((authorize) -> authorize
                         .requestMatchers("/auth/register").permitAll()
                         .requestMatchers("/static/**").permitAll()
@@ -38,6 +42,9 @@ public class SecurityConfig {
                                 .loginProcessingUrl("/login")
                                 .defaultSuccessUrl("/welcome", true)
                         .failureUrl("/auth/login?error=true")
+                        .permitAll())
+                .logout(authorize -> authorize.logoutUrl("/logout")
+                        .logoutSuccessUrl("/auth/login")
                         .permitAll());
         return http.build();
     }
