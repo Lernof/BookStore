@@ -8,6 +8,7 @@
             font-family: Arial, sans-serif;
             text-align: center;
             background-color: #f2f2f2;
+            background-image: url("/images/bookShelf.jpeg");
             padding: 20px;
         }
 
@@ -18,6 +19,11 @@
 
         h1 {
             color: #333;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
         }
 
         .button-wrapper {
@@ -77,6 +83,15 @@
         .book-link:hover {
             text-decoration: underline;
         }
+        .create-person-link {
+            display: block;
+            background-color: #fff;
+            padding: 10px;
+            border-radius: 10px; /* Adjust the border-radius value as needed */
+            margin-top: 20px;
+            text-decoration: none;
+            color: #e5705f;
+        }
     </style>
 </head>
 <body>
@@ -95,7 +110,7 @@
             <a href="/auth/logout">Logout</a>
         </div>
     </div>
-    <h1>All Books</h1>
+    <h1 th:class="container">All Books</h1>
     <div class="settings-form">
         <form action="/books" method="GET">
             <label for="page">Page:</label>
@@ -112,7 +127,7 @@
            th:text="${book.getName()} + ', ' + ${book.getAuthor()} + ', ' + ${book.getYear()}"></a>
     </div>
     <hr/>
-    <a th:href="@{/books/new}">Create new Book</a>
+    <a class="create-person-link" th:href="@{/books/new}">Create new Book</a>
 </div>
 </body>
 </html>

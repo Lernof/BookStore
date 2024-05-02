@@ -7,6 +7,7 @@
         body {
             font-family: Arial, sans-serif;
             background-color: #f2f2f2;
+            background-image: url("/images/bookShelf.jpeg");
             padding: 20px;
         }
 
@@ -58,12 +59,16 @@
 </head>
 <body>
 <form th:method="POST" th:action="@{/people/new}" th:object="${person}">
-    <label for="name">Enter Name:</label>
+    <label for="name">Enter Full Name:</label>
     <input type="text" id="name" th:field="*{fullName}">
     <div class="error-message" th:if="${#fields.hasErrors('fullName')}" th:errors="*{fullName}">Full Name Error</div>
 
-    <label for="yearOfBirth">Enter Year Of Birth:</label>
-    <input type="text" id="yearOfBirth" th:field="*{year_of_birth}">
+    <label for="username">Enter Username:</label>
+    <input type="text" id="username" th:field="*{username}">
+    <div class="error-message" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Username Error</div>
+
+    <label for="yearOfBirth">Select Year Of Birth:</label>
+    <input type="date" id="yearOfBirth" th:field="*{year_of_birth}">
     <div class="error-message" th:if="${#fields.hasErrors('year_of_birth')}" th:errors="*{year_of_birth}">Year of Birth Error</div>
 
     <hr/>

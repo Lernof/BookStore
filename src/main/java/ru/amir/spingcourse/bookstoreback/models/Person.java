@@ -1,11 +1,10 @@
 package ru.amir.spingcourse.bookstoreback.models;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -24,10 +23,16 @@ public class Person {
     @Column(name = "full_name")
     private String fullName;
 
+    @Column(name = "username")
+    @NotEmpty(message="This filed can't be empty")
+    @Size(max=255, message = "Your full name can't be larger then 255 letters")
+    private String username;
+
     @NotNull(message="This filed can't be empty")
-    @Min(value = 1900, message = "Your date of birth can't be earlyer than 1900")
     @Column(name = "year_of_birth")
-    private int year_of_birth;
+    @Temporal(TemporalType.DATE)
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date year_of_birth;
 
     @Column(name = "password")
     @NotEmpty(message="This filed can't be empty")
@@ -36,12 +41,21 @@ public class Person {
     @OneToMany(mappedBy = "owner")
     private List<Book> books;
 
-    public Person(String fullName, int year_of_birth) {
+    public Person(String fullName, Date year_of_birth, String username) {
         this.fullName = fullName;
         this.year_of_birth = year_of_birth;
+        this.username = username;
     }
 
     public Person() {
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getUsername() {
+        return username;
     }
 
     public String getPassword() {
@@ -68,7 +82,7 @@ public class Person {
         this.fullName = full_name;
     }
 
-    public void setYear_of_birth(int year_of_birth) {
+    public void setYear_of_birth(Date year_of_birth) {
         this.year_of_birth = year_of_birth;
     }
 
@@ -80,7 +94,7 @@ public class Person {
         return fullName;
     }
 
-    public int getYear_of_birth() {
+    public Date getYear_of_birth() {
         return year_of_birth;
     }
 

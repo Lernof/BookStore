@@ -15,4 +15,5 @@ public interface PeopleRepository extends JpaRepository<Person, Integer> {
     @Query(value = "FROM Book b WHERE b.owner.id = :value")
     List<Book> findAllBooks(@Param("value") int id);
     Optional<Person> findByFullName(String name);
+    Optional<Person> findByUsername(String name);
 }

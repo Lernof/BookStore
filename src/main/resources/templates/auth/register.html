@@ -11,11 +11,17 @@
         <img src="/images/book.jpeg" class="image" alt="image">
     </div>
 
-    <form th:method="POST" th:action="@{/auth/register}", th:object="${person}">
-        <label for="fullName">Username</label>
-        <input type="text" id="fullName" th:field="*{fullName}">
+    <form th:method="POST" th:action="@{/auth/register}" th:object="${person}">
+        <label for="full_name">Full Name</label>
+        <input type="text" id="full_name" th:field="*{fullName}">
         <div style="color: red" th:if="${#fields.hasErrors()}" th:errors="*{fullName}">
-            <span>fullName Error</span>
+            <span>Full Name Error</span>
+        </div>
+        <br/>
+        <label for="username">Username</label>
+        <input type="text" id="username" th:field="*{username}">
+        <div style="color: red" th:if="${#fields.hasErrors()}" th:errors="*{username}">
+            <span>Username Error</span>
         </div>
         <br/>
         <label for="password">Password</label>
@@ -25,7 +31,8 @@
         </div>
         <br/>
         <label for="year_of_birth">Year Of Birth</label>
-        <input type="text" id="year_of_birth" th:field="*{year_of_birth}">
+        <!-- Use type="date" for calendar input -->
+        <input type="date" id="year_of_birth" th:field="*{year_of_birth}">
         <div style="color: red" th:if="${#fields.hasErrors()}" th:errors="*{year_of_birth}">
             <span>Year Error</span>
         </div>

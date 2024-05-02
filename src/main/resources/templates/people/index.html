@@ -7,6 +7,7 @@
         body {
             background-image: url('/images/bookShelf.jpeg');
             background-size: cover;
+            background-image: url("/images/bookShelf.jpeg");
             margin: 0;
             padding: 0;
             font-family: Arial, sans-serif;
@@ -115,6 +116,8 @@
     <hr/>
     <a th:href="@{{id}/edit(id=${person.getId()})}">
         <button class="edit-button">Edit</button>
+    </a>
+    <a th:href="@{/people}">
         <button class="edit-button" th:href="@{/people}">Back To List</button>
     </a>
     <hr/>
