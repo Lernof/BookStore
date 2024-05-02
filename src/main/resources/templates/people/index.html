@@ -7,7 +7,6 @@
         body {
             background-image: url('/images/bookShelf.jpeg');
             background-size: cover;
-            background-image: url("/images/bookShelf.jpeg");
             margin: 0;
             padding: 0;
             font-family: Arial, sans-serif;
@@ -29,6 +28,7 @@
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
             color: #333;
+            text-align: center; /* Center align text */
         }
 
         h1 {
@@ -98,25 +98,71 @@
         .edit-button:hover {
             background-color: #9d6523;
         }
+
+        /* Style for the person's image */
+        .person-image {
+            max-width: 200px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            margin: 20px auto;
+            display: block;
+        }
+
+        /* Style for person info */
+        .person-info p {
+            font-size: 18px; /* Increase font size */
+            margin-bottom: 10px; /* Add space between lines */
+        }
+
+        /* Style for book buttons */
+        .book-button {
+            background-color: #ffa473;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .book-button:hover {
+            background-color: #9d6523;
+        }
+        .book-image {
+            max-width: 100px; /* Adjust as needed */
+            max-height: 150px; /* Adjust as needed */
+        }
     </style>
 </head>
 <body>
 <div class="container">
-    <p th:text="${person.getFullName()} + ', ' + ${person.getYear_of_birth()} + ', ' + ${person.getId()}"></p>
+    <!-- Display the person's image -->
+    <img th:src="@{/people/{id}/image(id=${person.getId()})}" class="person-image" alt="Person Image">
+
+    <div class="person-info">
+        <p><strong>Full Name:</strong> <span th:text="${person.getFullName()}"></span></p>
+        <p><strong>Date of Birth:</strong> <span th:text="${person.getYear_of_birth()}"></span></p>
+    </div>
+
     <hr/>
     <div th:if="${books != null}">
         <div th:each="book: ${books}" th:attr="class=${book.isOutdated() == true ? 'outdated' : 'non-outdated'}">
+            <img th:src="@{/books/{id}/image(id=${book.getId()})}" class="book-image" alt="Book Image">
             <p th:text="${book.getName()}"></p>
+            <a th:href="@{/books/{id}(id=${book.getId()})}">
+                <button class="book-button">View Book</button>
+            </a>
         </div>
     </div>
+
 
     <div th:if="${#lists.size(books) == 0}">
         <p>This person doesn't own any book</p>
     </div>
     <hr/>
-    <a th:href="@{{id}/edit(id=${person.getId()})}">
+    <a th:if="${role=='ROLE_ADMIN' || threadId == personId}" th:href="@{{id}/edit(id=${person.getId()})}">
         <button class="edit-button">Edit</button>
     </a>
+
     <a th:href="@{/people}">
         <button class="edit-button" th:href="@{/people}">Back To List</button>
     </a>

@@ -4,6 +4,14 @@
     <meta charset="UTF-8">
     <title>Register</title>
     <link rel="stylesheet" type="text/css" href="/css/styles.css">
+    <style>
+        /* Add custom styles for image preview */
+        .image-preview {
+            max-width: 200px;
+            max-height: 200px;
+            margin-top: 10px;
+        }
+    </style>
 </head>
 <body>
 <div class="container">
@@ -11,7 +19,7 @@
         <img src="/images/book.jpeg" class="image" alt="image">
     </div>
 
-    <form th:method="POST" th:action="@{/auth/register}" th:object="${person}">
+    <form th:method="POST" th:action="@{/auth/register}" th:object="${person}" enctype="multipart/form-data">
         <label for="full_name">Full Name</label>
         <input type="text" id="full_name" th:field="*{fullName}">
         <div style="color: red" th:if="${#fields.hasErrors()}" th:errors="*{fullName}">
@@ -37,8 +45,28 @@
             <span>Year Error</span>
         </div>
         <br/>
+        <!-- Add image input field -->
+        <label for="profile_image">Profile Image</label>
+        <input type="file" id="profile_image" name="image" accept="image/*" onchange="previewImage(this)">
+        <!-- Image preview -->
+        <img id="image-preview" class="image-preview" src="#" style="display: none;">
+        <br/>
         <input type="submit" value="Register">
     </form>
 </div>
+
+<!-- JavaScript for image preview -->
+<script>
+    function previewImage(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                document.getElementById('image-preview').src = e.target.result;
+                document.getElementById('image-preview').style.display = 'block';
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+</script>
 </body>
 </html>

@@ -7,14 +7,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.support.ByteArrayMultipartFileEditor;
 import ru.amir.spingcourse.bookstoreback.models.Book;
+import ru.amir.spingcourse.bookstoreback.models.Person;
+import ru.amir.spingcourse.bookstoreback.security.PersonDetails;
 import ru.amir.spingcourse.bookstoreback.services.BooksService;
 import ru.amir.spingcourse.bookstoreback.services.PeopleService;
 
@@ -23,6 +30,7 @@ import java.io.IOException;
 
 @Controller
 @RequestMapping("/books")
+
 public class BookController {
     private final BooksService booksService;
     private final PeopleService peopleService;
@@ -39,6 +47,9 @@ public class BookController {
                             @RequestParam(value = "book_per_page", required = false, defaultValue = "1000") int book_per_page,
                             @RequestParam(value = "sort_by", required = false, defaultValue = "false")boolean sort_by){
         model.addAttribute("books", booksService.findAll(page, book_per_page, sort_by));
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String role = authentication.getAuthorities().iterator().next().getAuthority();
+        model.addAttribute("role", role);
         return "books/show";
     }
 
@@ -48,6 +59,13 @@ public class BookController {
         model.addAttribute("book", book);
         model.addAttribute("person", book.getOwner());
         model.addAttribute("people", peopleService.findAll());
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Object principal = authentication.getPrincipal();
+        PersonDetails threadPerson = (PersonDetails)principal;
+        String role = authentication.getAuthorities().iterator().next().getAuthority();
+        model.addAttribute("role", role);
+        model.addAttribute("threadPersonUsername",threadPerson.getUsername());
+        model.addAttribute("threadPerson", threadPerson);
         return "books/index";
     }
 
@@ -69,12 +87,14 @@ public class BookController {
     }
 
     @GetMapping("/{id}/edit")
+    @PreAuthorize("hasRole('ADMIN')")
     public String editPage(Model model, @PathVariable("id") int id){
         model.addAttribute("book", booksService.findById(id));
         return "books/edit";
     }
 
     @PatchMapping("/{id}/edit")
+    @PreAuthorize("hasRole('ADMIN')")
     public String editBook(@PathVariable("id") int id,
                            @Valid @ModelAttribute("book") Book book,
                            @RequestParam(value = "image") MultipartFile image,
@@ -82,8 +102,6 @@ public class BookController {
         if(bindingResult.hasErrors()){
             return "books/edit";
         }
-        System.out.println(image.getBytes());
-        System.out.println(book.getImage());
         booksService.editBook(book, id, image);
         return "redirect:/books";
     }

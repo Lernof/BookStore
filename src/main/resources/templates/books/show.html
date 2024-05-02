@@ -88,6 +88,23 @@
             max-width: 100px; /* Adjust as needed */
             max-height: 150px; /* Adjust as needed */
         }
+        .create-book-container {
+            background-color: #be9462; /* Background color */
+            padding: 10px; /* Add some padding for spacing */
+            border-radius: 5px; /* Add rounded corners */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+            margin-bottom: 20px; /* Add margin to separate from other elements */
+        }
+
+        .create-book-link {
+            color: #fff; /* Text color */
+            text-decoration: none; /* Remove underline */
+            font-weight: bold; /* Make text bold */
+        }
+
+        .create-book-link:hover {
+            background-color: #9d6523; /* Darker background color on hover */
+        }
     </style>
 </head>
 <body>
@@ -126,7 +143,9 @@
            th:text="${book.getName()} + ', ' + ${book.getAuthor()} + ', ' + ${book.getYear()}"></a>
     </div>
     <hr/>
-    <a class="create-person-link" th:href="@{/books/new}">Create new Book</a>
+    <div class="create-book-container">
+        <a th:if="${role=='ROLE_ADMIN'}" class="create-book-link" th:href="@{/books/new}">Create new Book</a>
+    </div>
 </div>
 </body>
 </html>

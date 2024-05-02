@@ -121,21 +121,23 @@
     </div>
 
     <div class="button-container">
-        <form th:method="PATCH" th:action="@{/books/release}" th:object="${book}">
+        <form th:if="${person != null && person.username == threadPersonUsername || role=='ROLE_ADMIN'}" th:method="PATCH" th:action="@{/books/release}" th:object="${book}">
             <input type="hidden" th:name="book_id" th:value="${book.getId()}">
-            <button type="submit" class="btn btn-primary custom-button" th:if="${person != null}">Release Book</button>
+            <button type="submit" class="btn btn-primary custom-button">Release Book</button>
         </form>
+
         <form th:method="PATCH" th:action="@{/books/borrow}" th:unless="${person != null}">
             <input type="hidden" th:name="book_id" th:value="${book.getId()}">
             <select id="selected_person" name="selected_person" class="form-control">
-                <option th:each="person : ${people}" th:value="${person.getId()}" th:text="${person.getFullName()}"></option>
+                <option th:if="${role == 'ROLE_ADMIN'}" th:each="person : ${people}" th:value="${person.getId()}" th:text="${person.getFullName()}"></option>
+                <option th:if="${role == 'ROLE_USER'}" th:value="${threadPerson.getId()}" th:text="${threadPerson.getUsername()}"></option>
             </select>
             <button type="submit" class="btn btn-primary custom-button">Assign Book</button>
         </form>
     </div>
 
     <div class="button-container">
-        <a th:href="@{{id}/edit(id=${book.getId()})}">
+        <a th:if="${role=='ROLE_ADMIN'}" th:href="@{{id}/edit(id=${book.getId()})}">
             <button class="btn btn-primary custom-button">Edit Book Info</button>
         </a>
         <a href="/books">

@@ -1,10 +1,12 @@
 package ru.amir.spingcourse.bookstoreback.security;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import ru.amir.spingcourse.bookstoreback.models.Person;
 
 import java.util.Collection;
+import java.util.Collections;
 
 
 public class PersonDetails implements UserDetails {
@@ -20,7 +22,7 @@ public class PersonDetails implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return Collections.singletonList(new SimpleGrantedAuthority(person.getRole()));
     }
 
     @Override
@@ -28,6 +30,9 @@ public class PersonDetails implements UserDetails {
         return person.getPassword();
     }
 
+    public int getId(){
+        return person.getId();
+    }
     @Override
     public String getUsername() {
         return person.getUsername();

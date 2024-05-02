@@ -41,6 +41,11 @@ public class Person {
     @OneToMany(mappedBy = "owner")
     private List<Book> books;
 
+    @Column(name = "avatar")
+    private byte[] avatar;
+
+    @Column(name = "role")
+    private String role;
     public Person(String fullName, Date year_of_birth, String username) {
         this.fullName = fullName;
         this.year_of_birth = year_of_birth;
@@ -48,6 +53,21 @@ public class Person {
     }
 
     public Person() {
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public byte[] getAvatar() {
+        return avatar;
+    }
+    public void setAvatar(byte[] avatar) {
+        this.avatar = avatar;
     }
 
     public void setUsername(String username) {

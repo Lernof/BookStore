@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 import ru.amir.spingcourse.bookstoreback.models.Book;
 import ru.amir.spingcourse.bookstoreback.models.Person;
 import ru.amir.spingcourse.bookstoreback.repositories.PeopleRepository;
@@ -42,19 +43,35 @@ public class PeopleService{
     }
 
     @Transactional
-    public void createPerson(Person person){
+    public void createPerson(Person person, MultipartFile image){
+        if(image != null && !image.isEmpty()){
+            try{
+                person.setAvatar(image.getBytes());
+            } catch (Exception ex){
+                ex.getStackTrace();
+            }
+        }
+        person.setRole("ROLE_USER");
         peopleRepository.save(person);
     }
 
     @Transactional
-    public void editPerson(Person updatedPerson, int id){
+    public void editPerson(Person updatedPerson, int id, MultipartFile image){
         Optional<Person> person = peopleRepository.findById(id);
         if(person.isPresent()){
             Person newPerson = person.get();
             newPerson.setId(id);
             newPerson.setFullName(updatedPerson.getFullName());
             newPerson.setBooks(updatedPerson.getBooks());
+            newPerson.setPassword(encodePassword(updatedPerson.getPassword()));
             newPerson.setYear_of_birth(updatedPerson.getYear_of_birth());
+            if(image != null && !image.isEmpty()){
+                try{
+                    newPerson.setAvatar(image.getBytes());
+                } catch (Exception ex){
+                    ex.getStackTrace();
+                }
+            }
             peopleRepository.save(newPerson);
         }
     }

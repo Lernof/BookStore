@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import ru.amir.spingcourse.bookstoreback.models.Person;
 import ru.amir.spingcourse.bookstoreback.services.PeopleService;
 
@@ -29,12 +30,13 @@ public class AuthController{
 
     @PostMapping("/register")
     public String registerUser(@Valid @ModelAttribute("person") Person newPerson,
+                               @RequestParam("image") MultipartFile image,
                                BindingResult bindingResult){
         if(bindingResult.hasErrors()){
             return "auth/register";
         }
         newPerson.setPassword(peopleService.encodePassword(newPerson.getPassword()));
-        peopleService.createPerson(newPerson);
+        peopleService.createPerson(newPerson, image);
         return "redirect:/login";
     }
 
