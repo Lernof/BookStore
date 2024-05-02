@@ -1,26 +1,103 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th = "https://www.thymeleaf.org/">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Search book</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            background-image: url('/images/bookShelf.jpeg');
+            background-size: cover;
+            background-position: center;
+            margin: 0;
+            padding: 20px;
+        }
+
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        input[type="text"] {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 200px;
+            margin-right: 10px;
+        }
+
+        input[type="submit"] {
+            padding: 8px 20px;
+            background-color: #be9462;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        .book-container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .book-details {
+            margin-bottom: 10px;
+        }
+
+        .book-details p {
+            margin: 5px 0;
+        }
+
+        .book-details hr {
+            border: 0.5px solid #ccc;
+        }
+
+        .not-found {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+    </style>
 </head>
 <body>
 <form th:method="GET" th:action="@{/books/search}">
-    <label for="search-input">Type Name of the Book</label>
+    <label for="search-input">Type Name of the Book:</label>
     <input type="text" id="search-input" name="book_name">
-    <input type="submit">
+    <input type="submit" value="Search">
 </form>
 
 <div th:if="${books!=null}">
-    <div th:each="book : ${books}">
-        <p th:text="${book.getName()}"></p>
-        <p th:if="${book.getOwner()!=null}" th:text="'Book to borrowed by: ' + ${book.owner.fullName}"></p>
-        <p th:if="${book.getOwner()==null}">This book is free</p>
+    <div th:each="book : ${books}" class="book-container">
+        <div class="book-details">
+            <p th:text="${book.getName()}"></p>
+            <p th:if="${book.getOwner()!=null}" th:text="'Book borrowed by: ' + ${book.owner.fullName}"></p>
+            <p th:if="${book.getOwner()==null}">This book is available</p>
+        </div>
+        <a th:href="@{'/books/' + ${book.getId()}}">
+            <button>View Details</button>
+        </a>
         <hr/>
     </div>
 </div>
 
-<div th:if="${books.isEmpty()}">
+
+<div th:if="${books.isEmpty()}" class="not-found">
     <p>Book not found</p>
 </div>
 

@@ -1,16 +1,108 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th = "http://www.thymeleaf.org/">
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
 <head>
     <meta charset="UTF-8">
-    <title>All people</title>
+    <title>All People</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f2f2f2;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        .button-wrapper {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .button-container {
+            flex: 1;
+            margin: 0 5px;
+        }
+
+        .button-container a {
+            display: block;
+            padding: 10px;
+            background-color: #be9462;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+
+        .button-container a:hover {
+            background-color: #9d6523;
+        }
+
+        .settings-form {
+            margin-bottom: 20px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .settings-form input {
+            margin: 0 5px;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .book-container {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+
+        .book-link {
+            display: block;
+            margin-bottom: 10px;
+            text-decoration: none;
+            color: #333;
+        }
+
+        .book-link:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
-<div th:each="person: ${people}">
-    <a th:href="@{/people/{id}(id=${person.getId()})}"
-       th:text="${person.getFullName()} + ', ' + ${person.getYear_of_birth()}"></a>
+<div class="container">
+    <div class="button-wrapper">
+        <div class="button-container">
+            <a href="/books">All Books</a>
+        </div>
+        <div class="button-container">
+            <a href="/people">All People</a>
+        </div>
+        <div class="button-container">
+            <a href="/books/search">Search Book</a>
+        </div>
+        <div class="button-container">
+            <a href="/logout">Logout</a>
+        </div>
+    </div>
+    <h1>All Users</h1>
+    <div class="book-container">
+        <div th:each="person: ${people}" class="book-link">
+            <a th:href="@{/people/{id}(id=${person.getId()})}" th:text="${person.getFullName()} + ', ' + ${person.getYear_of_birth()}"></a>
+        </div>
+    </div>
+    <hr/>
+    <a th:href="@{/people/new}">Create new Person</a>
 </div>
-<br/>
-<hr/>
-<a th:href="@{/people/new}">Create new Person</a>
 </body>
 </html>

@@ -2,24 +2,81 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Create Person</title>
+    <title>Edit Person</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            padding: 20px;
+        }
+
+        form {
+            max-width: 400px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"], input[type="date"], input[type="submit"], input[type="button"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        input[type="date"]::-webkit-inner-spin-button,
+        input[type="date"]::-webkit-calendar-picker-indicator {
+            display: none;
+            -webkit-appearance: none;
+        }
+
+        input[type="date"] {
+            -moz-appearance: textfield;
+        }
+
+        input[type="submit"], input[type="button"] {
+            background-color: #be9462;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover, input[type="button"]:hover {
+            background-color: #9d6523;
+        }
+
+        .error-message {
+            color: darkred;
+            margin-top: 5px;
+            font-size: 14px;
+        }
+    </style>
 </head>
 <body>
 <form th:method="PATCH" th:action="@{/people/{id}/edit(id=${person.getId()})}" th:object="${person}">
-    <label for="name">Enter name: </label>
+    <label for="name">Enter Name:</label>
     <input type="text" id="name" th:field="*{fullName}">
-    <div style="color: darkred" th:if="${#fields.hasErrors('fullName')}" th:errors="*{fullName}">
-        fullName Error
-    </div>
-    <br/>
-    <label for="YearOfBirth">Enter Year Of Birth</label>
-    <input type="text" id="YearOfBirth" th:field="*{year_of_birth}">
-    <div style="color: darkred" th:if="${#fields.hasErrors('year_of_birth')}" th:errors="*{year_of_birth}">
-        fullName Error
-    </div>
-    <br/>
+    <div class="error-message" th:if="${#fields.hasErrors('fullName')}" th:errors="*{fullName}">Full Name Error</div>
+
+    <label for="yearOfBirth">Select Year Of Birth:</label>
+    <input type="date" id="yearOfBirth" th:field="*{year_of_birth}">
+    <div class="error-message" th:if="${#fields.hasErrors('year_of_birth')}" th:errors="*{year_of_birth}">Year of Birth Error</div>
+
     <hr/>
     <input type="submit" value="Edit">
+    <a href="/people"><input type="button" value="Back to List"></a>
 </form>
 </body>
 </html>

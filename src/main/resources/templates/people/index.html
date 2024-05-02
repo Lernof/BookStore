@@ -1,40 +1,127 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th = "https://www.thymeleaf.org/">
+<html lang="en" xmlns:th="https://www.thymeleaf.org/">
 <head>
     <meta charset="UTF-8">
     <title>People</title>
     <style>
-        /* Define your styles here */
-        .not-outdated {
-            /* Define styles for non-outdated books */
+        body {
+            background-image: url('/images/bookShelf.jpeg');
+            background-size: cover;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
         }
-        .outdated {
-            /* Define styles for outdated books */
-            color: red;
+        .form-group {
+            display: flex;
+        }
+
+        .form-group select {
+            flex: 1;
+            margin-right: 10px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.8);
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            color: #333;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        form {
+            margin-top: 20px;
+        }
+
+        label {
             font-weight: bold;
+        }
+
+        select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            margin-top: 5px;
+        }
+
+        .button-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .button-container button {
+            background-color: #be9462;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            padding: 10px 20px;
+            margin-right: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .custom-button {
+            background-color: #be9462;
+            border: none; /* Add this line to remove the border */
+        }
+        .custom-delete-button {
+            background-color: #ff003a;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            padding: 10px 20px;
+            margin-right: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .edit-button {
+            background-color: #be9462;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .edit-button:hover {
+            background-color: #9d6523;
         }
     </style>
 </head>
 <body>
-<p th:text="${person.getFullName()} + ', ' + ${person.getYear_of_birth()} + ', ' + ${person.getId()}"></p>
-<hr/>
-<div th:if="${books != null}">
-    <div th:each="book: ${books}" th:attr="class=${book.isOutdated() == true ? 'outdated' : 'non-outdated'}">
-        <p th:text="${book.getName()}"></p>
+<div class="container">
+    <p th:text="${person.getFullName()} + ', ' + ${person.getYear_of_birth()} + ', ' + ${person.getId()}"></p>
+    <hr/>
+    <div th:if="${books != null}">
+        <div th:each="book: ${books}" th:attr="class=${book.isOutdated() == true ? 'outdated' : 'non-outdated'}">
+            <p th:text="${book.getName()}"></p>
+        </div>
     </div>
-</div>
 
-<div th:if="${#lists.size(books) == 0}">
-    <p>This person doesn't own any book</p>
+    <div th:if="${#lists.size(books) == 0}">
+        <p>This person doesn't own any book</p>
+    </div>
+    <hr/>
+    <a th:href="@{{id}/edit(id=${person.getId()})}">
+        <button class="edit-button">Edit</button>
+        <button class="edit-button" th:href="@{/people}">Back To List</button>
+    </a>
+    <hr/>
+    <form class="button-container" th:method="DELETE" th:action="@{{id}(id=${person.getId()})}">
+        <input type="submit" value="Delete" class="custom-delete-button">
+    </form>
+    <a th:href="@{/edit}"></a>
 </div>
-<hr/>
-<a th:href="@{{id}/edit(id=${person.getId()})}">
-    <button>Edit</button>
-</a>
-<hr/>
-<form th:method="DELETE" th:action="@{{id}(id=${person.getId()})}">
-    <input type="submit" value="Delete">
-</form>
-<a th:href="@{/edit}"></a>
 </body>
 </html>
