@@ -16,7 +16,7 @@
             max-width: 800px;
             margin: 50px auto;
             padding: 20px;
-            background-color: rgba(255, 255, 255, 0.8);
+            background-color: rgba(255, 255, 255, 0.85);
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
             color: #333;
@@ -88,6 +88,16 @@
         .button-container button:hover {
             background-color: #a67b49;
         }
+
+        /* Style for description container */
+        .description-container {
+            background-color: #be9462;
+            color: white;
+            border-radius: 10px;
+            padding: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
     </style>
 </head>
 <body>
@@ -96,10 +106,18 @@
     <div class="book-info">
         <img th:src="@{/books/{id}/image(id=${book.getId()})}" class="book-image" alt="Book Image">
         <div class="book-details">
-            <h2 th:text="${book.getName()} + ', ' + ${book.getAuthor()} + ', ' + ${book.getYear()}"></h2>
-            <p th:if="${person != null}" th:text="'This book is currently taken by: ' + ${person.getFullName()}"></p>
-            <p th:unless="${person != null}">This book is currently available.</p>
+            <h2 th:text="'Book Name: '+ ${book.getName()}"></h2>
+            <h3 th:text="'Author: '+ ${book.getAuthor()} + ',  ' + 'Date: ' + ${book.getYear()}"></h3>
         </div>
+    </div>
+
+    <!-- Description container -->
+    <div class="description-container">
+        <p th:text="${book.getDescription()}"></p>
+    </div>
+    <div class="button-container">
+        <p th:if="${person != null}" th:text="'This book is currently taken by: ' + ${person.getFullName()}"></p>
+        <p th:unless="${person != null}">This book is currently available.</p>
     </div>
 
     <div class="button-container">
@@ -123,12 +141,14 @@
         <a href="/books">
             <button class="btn btn-primary custom-button">Back to List</button>
         </a>
+        <!-- Show whether the book is taken or available -->
     </div>
 
     <form class="button-container" th:method="DELETE" th:action="@{/books/delete}">
         <input type="hidden" th:value="${book.getId()}" th:name="book_id">
         <button type="submit" class="btn btn-danger custom-delete-button">Delete Book</button>
     </form>
+
 </div>
 </body>
 </html>

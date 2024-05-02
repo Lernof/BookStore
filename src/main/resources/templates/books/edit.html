@@ -28,6 +28,12 @@
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Add text shadow */
             font-weight: bold; /* Make font thicker */
         }
+
+        /* Increase height of description textarea */
+        #description {
+            min-height: 150px; /* Set the minimum height */
+            resize: vertical; /* Allow vertical resizing */
+        }
     </style>
 </head>
 <body>
@@ -55,6 +61,14 @@
                 Please provide a valid year.
             </div>
         </div>
+        <!-- Add description textarea field -->
+        <div class="form-group">
+            <label for="description">Enter Description:</label>
+            <textarea id="description" th:field="*{description}" class="form-control" style="min-height: 150px;"></textarea>
+            <div style="color: red" th:if="${#fields.hasErrors('description')}" th:errors="*{description}">
+                Please provide a valid description.
+            </div>
+        </div>
         <div class="form-group">
             <label for="image">Select New Image:</label>
             <input type="file" id="image" name="image" accept="image/*" class="form-control-file">
@@ -64,3 +78,4 @@
 </div>
 </body>
 </html>
+\

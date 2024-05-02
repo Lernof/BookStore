@@ -40,6 +40,12 @@
             max-height: 200px; /* Limit height to prevent distortion */
             margin-top: 10px; /* Add space between image and other elements */
         }
+
+        /* Increase height of description textarea */
+        #description {
+            min-height: 150px; /* Set the minimum height */
+            resize: vertical; /* Allow vertical resizing */
+        }
     </style>
 </head>
 <body>
@@ -69,11 +75,19 @@
                 </div>
             </div>
         </div>
-        <div class="form-group col-md-6">
-            <label class="custom-file-label">Choose Image</label>
-            <input type="file" class="custom-file-input" name="image" id="image-input" onchange="previewImage()">
+        <!-- Add description textarea field -->
+        <div class="form-group">
+            <label for="description">Enter Description:</label>
+            <textarea id="description" th:field="*{description}" class="form-control" style="min-height: 150px;" required></textarea>
+            <div style="color: red" th:if="${#fields.hasErrors('description')}" th:errors="*{description}">
+                Please provide a valid description.
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="image">Select New Image:</label>
+            <input type="file" id="image" name="image" accept="image/*" class="form-control-file" onchange="previewImage(this)">
             <!-- Image preview -->
-            <img id="image-preview" src="#"/>
+            <img id="image-preview" src="#" style="display: none;"/>
         </div>
         <button type="submit" class="btn btn-primary btn-block btn-custom">Create</button>
     </form>
@@ -81,12 +95,15 @@
 
 <!-- JavaScript for image preview -->
 <script>
-    function previewImage() {
-        var reader = new FileReader();
-        reader.onload = function (e) {
-            document.getElementById('image-preview').src = e.target.result;
-        };
-        reader.readAsDataURL(document.getElementById('image-input').files[0]);
+    function previewImage(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                document.getElementById('image-preview').src = e.target.result;
+                document.getElementById('image-preview').style.display = 'block';
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
     }
 </script>
 </body>

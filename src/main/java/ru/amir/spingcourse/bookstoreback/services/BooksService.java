@@ -99,6 +99,7 @@ public class BooksService {
             newBook.setName(updatedBook.getName());
             newBook.setAuthor(updatedBook.getAuthor());
             newBook.setYear(updatedBook.getYear());
+            newBook.setDescription(updatedBook.getDescription());
             if(image != null & !image.isEmpty()){
                 newBook.setImage(image.getBytes());
             }
