@@ -1,16 +1,24 @@
 package ru.amir.spingcourse.bookstoreback.Controllers;
 
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.crossstore.ChangeSetPersister;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.support.ByteArrayMultipartFileEditor;
 import ru.amir.spingcourse.bookstoreback.models.Book;
 import ru.amir.spingcourse.bookstoreback.services.BooksService;
 import ru.amir.spingcourse.bookstoreback.services.PeopleService;
 
-
+import java.io.IOException;
 
 
 @Controller
@@ -50,11 +58,13 @@ public class BookController {
     }
 
     @PostMapping("/new")
-    public String createBook(@Valid @ModelAttribute("book") Book book, BindingResult bindingResult){
+    public String createBook(@Valid @ModelAttribute("book") Book book,
+                             @RequestParam("image")MultipartFile image,
+                             BindingResult bindingResult){
         if(bindingResult.hasErrors()){
             return "books/new";
         }
-        booksService.createBook(book);
+        booksService.createBook(book, image);
         return "redirect:/books";
     }
 
@@ -65,11 +75,16 @@ public class BookController {
     }
 
     @PatchMapping("/{id}/edit")
-    public String editBook(@PathVariable("id") int id, @Valid @ModelAttribute("book") Book book, BindingResult bindingResult){
+    public String editBook(@PathVariable("id") int id,
+                           @Valid @ModelAttribute("book") Book book,
+                           @RequestParam(value = "image") MultipartFile image,
+                           BindingResult bindingResult) throws IOException {
         if(bindingResult.hasErrors()){
             return "books/edit";
         }
-        booksService.editBook(book, id);
+        System.out.println(image.getBytes());
+        System.out.println(book.getImage());
+        booksService.editBook(book, id, image);
         return "redirect:/books";
     }
 
@@ -95,5 +110,23 @@ public class BookController {
     public String searchBook(Model model,@RequestParam(value = "book_name", required = false, defaultValue = "#$%^&*") String bookName){
         model.addAttribute("books", booksService.findByNameStartingWith(bookName));
         return "books/search";
+    }
+
+    @InitBinder
+    protected void initBinder(HttpServletRequest request, ServletRequestDataBinder binder)
+            throws ServletException {
+
+        // Convert multipart object to byte[]
+        binder.registerCustomEditor(byte[].class, new ByteArrayMultipartFileEditor());
+    }
+    // Controller method for retrieving the image
+    @GetMapping("/{id}/image")
+    public ResponseEntity<byte[]> getImage(@PathVariable Long id) throws Exception {
+        Book book = booksService.findById(id);
+        if(book == null){
+            throw new ChangeSetPersister.NotFoundException();
+        }
+        byte[] image = book.getImage();
+        return ResponseEntity.ok().contentType(MediaType.IMAGE_JPEG).body(image);
     }
 }

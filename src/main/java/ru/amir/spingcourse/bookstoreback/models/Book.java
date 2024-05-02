@@ -5,6 +5,7 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import org.hibernate.annotations.Type;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.Duration;
@@ -43,6 +44,12 @@ public class Book {
     @JoinColumn(name = "person_id", referencedColumnName = "id")
     private Person owner;
 
+    @Column(name = "image")
+    private byte[] image;
+
+    @Column(name = "description")
+    @Size(min = 3, message = "Description should be at least 3 letters")
+    private String description;
     public Book( String name, String author, Date year) {
         this.author = author;
         this.year = year;
@@ -50,6 +57,22 @@ public class Book {
     }
 
     public Book() {
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public byte[] getImage() {
+        return image;
+    }
+
+    public void setImage(byte[] image) {
+        this.image = image;
     }
 
     public LocalDateTime getBorrowed_at() {

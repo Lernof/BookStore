@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>People</title>
+    <title>Book Details</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         body {
@@ -12,15 +12,6 @@
             padding: 0;
             font-family: Arial, sans-serif;
         }
-        .form-group {
-            display: flex;
-        }
-
-        .form-group select {
-            flex: 1;
-            margin-right: 10px;
-        }
-
         .container {
             max-width: 800px;
             margin: 50px auto;
@@ -36,27 +27,35 @@
             color: #333;
         }
 
-        form {
-            margin-top: 20px;
+        .book-info {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
         }
 
-        label {
-            font-weight: bold;
+        .book-image {
+            max-width: 150px; /* Adjust as needed */
+            max-height: 200px; /* Adjust as needed */
+            margin-right: 20px;
         }
 
-        select {
-            width: 100%;
-            padding: 8px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            box-sizing: border-box;
-            margin-top: 5px;
+        .book-details {
+            flex: 1;
+        }
+
+        .book-details h2 {
+            margin-bottom: 10px;
+        }
+
+        .book-details p {
+            margin: 0;
         }
 
         .button-container {
             text-align: center;
             margin-top: 20px;
         }
+
         .button-container button {
             background-color: #be9462;
             color: white;
@@ -68,10 +67,12 @@
             border-radius: 5px;
             cursor: pointer;
         }
+
         .custom-button {
             background-color: #be9462;
             border: none; /* Add this line to remove the border */
         }
+
         .custom-delete-button {
             background-color: #ff003a;
             color: white;
@@ -91,41 +92,42 @@
 </head>
 <body>
 <div class="container">
-    <h1>Create Book</h1>
-    <p th:text="${book.getName()} + ', ' + ${book.getAuthor()} + ', ' + ${book.getYear()}"></p>
-    <div th:if="${person != null}">
-        <p th:text="'This book is currently taken by: ' + ${person.getFullName()}"></p>
-        <form class="button-container" th:method="PATCH" th:action="@{/books/release}" th:object="${book}">
-            <input type="hidden" th:name="book_id" th:value="${book.getId()}">
-            <button type="submit">Release Book</button>
-        </form>
+    <h1>Book Details</h1>
+    <div class="book-info">
+        <img th:src="@{/books/{id}/image(id=${book.getId()})}" class="book-image" alt="Book Image">
+        <div class="book-details">
+            <h2 th:text="${book.getName()} + ', ' + ${book.getAuthor()} + ', ' + ${book.getYear()}"></h2>
+            <p th:if="${person != null}" th:text="'This book is currently taken by: ' + ${person.getFullName()}"></p>
+            <p th:unless="${person != null}">This book is currently available.</p>
+        </div>
     </div>
 
-    <div th:unless="${person != null}">
-        <label for="selected_person" style="font-size: 20px">This book is currently available. Please select a person to assign it to:</label>
-        <form th:method="PATCH" th:action="@{/books/borrow}">
+    <div class="button-container">
+        <form th:method="PATCH" th:action="@{/books/release}" th:object="${book}">
             <input type="hidden" th:name="book_id" th:value="${book.getId()}">
-            <div class="form-group"> <!-- Added div wrapper -->
-                <select id="selected_person" name="selected_person" class="form-control"> <!-- Added class "form-control" for Bootstrap styling -->
-                    <option th:each="person : ${people}" th:value="${person.getId()}" th:text="${person.getFullName()}"></option>
-                </select>
-                <button type="submit" class="btn btn-primary custom-button">Assign Book</button> <!-- Added Bootstrap classes for styling -->
-            </div>
+            <button type="submit" class="btn btn-primary custom-button" th:if="${person != null}">Release Book</button>
+        </form>
+        <form th:method="PATCH" th:action="@{/books/borrow}" th:unless="${person != null}">
+            <input type="hidden" th:name="book_id" th:value="${book.getId()}">
+            <select id="selected_person" name="selected_person" class="form-control">
+                <option th:each="person : ${people}" th:value="${person.getId()}" th:text="${person.getFullName()}"></option>
+            </select>
+            <button type="submit" class="btn btn-primary custom-button">Assign Book</button>
         </form>
     </div>
-
 
     <div class="button-container">
         <a th:href="@{{id}/edit(id=${book.getId()})}">
-            <button>Edit Book Info</button>
+            <button class="btn btn-primary custom-button">Edit Book Info</button>
         </a>
         <a href="/books">
-            <button>Back to List</button>
+            <button class="btn btn-primary custom-button">Back to List</button>
         </a>
     </div>
+
     <form class="button-container" th:method="DELETE" th:action="@{/books/delete}">
-        <input  type="hidden" th:value="${book.getId()}" th:name="book_id">
-        <button type="submit">Delete Book</button>
+        <input type="hidden" th:value="${book.getId()}" th:name="book_id">
+        <button type="submit" class="btn btn-danger custom-delete-button">Delete Book</button>
     </form>
 </div>
 </body>

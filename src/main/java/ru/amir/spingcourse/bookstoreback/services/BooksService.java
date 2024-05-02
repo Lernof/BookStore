@@ -5,10 +5,12 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 import ru.amir.spingcourse.bookstoreback.models.Book;
 import ru.amir.spingcourse.bookstoreback.models.Person;
 import ru.amir.spingcourse.bookstoreback.repositories.BooksRepository;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -42,6 +44,10 @@ public class BooksService {
         Optional<Book> book = booksRepository.findById(id);
         return book.orElse(null);
     }
+    public Book findById(Long id){
+        Optional<Book> book = booksRepository.findById(id);
+        return book.orElse(null);
+    }
 
     public Book getReferenceById(int id){
         return booksRepository.getReferenceById(id);
@@ -52,7 +58,12 @@ public class BooksService {
     }
 
     @Transactional
-    public void createBook(Book newBook){
+    public void createBook(Book newBook, MultipartFile image){
+        try{
+            newBook.setImage(image.getBytes());
+        } catch (Exception ex){
+            ex.getStackTrace();
+        }
         booksRepository.save(newBook);
     }
 
@@ -80,7 +91,7 @@ public class BooksService {
      }
 
     @Transactional
-    public void editBook(Book updatedBook, int id){
+    public void editBook(Book updatedBook, int id, MultipartFile image) throws IOException {
         Optional<Book> book = booksRepository.findById(id);
         if(book.isPresent()){
             Book newBook = book.get();
@@ -88,6 +99,9 @@ public class BooksService {
             newBook.setName(updatedBook.getName());
             newBook.setAuthor(updatedBook.getAuthor());
             newBook.setYear(updatedBook.getYear());
+            if(image != null & !image.isEmpty()){
+                newBook.setImage(image.getBytes());
+            }
             booksRepository.save(newBook);
         }
     }

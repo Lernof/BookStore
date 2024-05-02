@@ -28,12 +28,24 @@
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Add text shadow */
             font-weight: bold; /* Make font thicker */
         }
+
+        /* Styling for the image upload button */
+        .custom-file-label::after {
+            content: "Choose Image";
+        }
+
+        /* Styling for the image preview */
+        #image-preview {
+            max-width: 100%; /* Ensure image fits within container */
+            max-height: 200px; /* Limit height to prevent distortion */
+            margin-top: 10px; /* Add space between image and other elements */
+        }
     </style>
 </head>
 <body>
 <div class="container-fluid my-container">
     <h1 class="text-center mb-4">Create Book</h1>
-    <form th:method="POST" th:action="@{/books/new}" th:object="${book}" class="needs-validation" novalidate>
+    <form th:method="POST" th:action="@{/books/new}" th:object="${book}" class="needs-validation" novalidate enctype="multipart/form-data">
         <div class="form-group">
             <label for="name">Enter Name:</label>
             <input type="text" id="name" th:field="*{name}" class="form-control" required>
@@ -57,8 +69,25 @@
                 </div>
             </div>
         </div>
+        <div class="form-group col-md-6">
+            <label class="custom-file-label">Choose Image</label>
+            <input type="file" class="custom-file-input" name="image" id="image-input" onchange="previewImage()">
+            <!-- Image preview -->
+            <img id="image-preview" src="#"/>
+        </div>
         <button type="submit" class="btn btn-primary btn-block btn-custom">Create</button>
     </form>
 </div>
+
+<!-- JavaScript for image preview -->
+<script>
+    function previewImage() {
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            document.getElementById('image-preview').src = e.target.result;
+        };
+        reader.readAsDataURL(document.getElementById('image-input').files[0]);
+    }
+</script>
 </body>
 </html>

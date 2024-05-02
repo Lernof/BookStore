@@ -7,10 +7,12 @@ import org.springframework.stereotype.Repository;
 import ru.amir.spingcourse.bookstoreback.models.Book;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface BooksRepository extends JpaRepository<Book, Integer> {
     @Query("SELECT b FROM Book b WHERE b.name LIKE :namePrefix%")
     List<Book> findByNameStartingWith(@Param("namePrefix") String namePrefix);
 
+    Optional<Book> findById(Long id);
 }

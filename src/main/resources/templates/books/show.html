@@ -83,14 +83,10 @@
         .book-link:hover {
             text-decoration: underline;
         }
-        .create-person-link {
-            display: block;
-            background-color: #fff;
-            padding: 10px;
-            border-radius: 10px; /* Adjust the border-radius value as needed */
-            margin-top: 20px;
-            text-decoration: none;
-            color: #e5705f;
+
+        .book-image {
+            max-width: 100px; /* Adjust as needed */
+            max-height: 150px; /* Adjust as needed */
         }
     </style>
 </head>
@@ -123,6 +119,9 @@
         </form>
     </div>
     <div th:each="book: ${books}" class="book-container">
+        <div>
+            <img th:src="@{/books/{id}/image(id=${book.getId()})}" class="book-image" alt="Book Image">
+        </div>
         <a th:href="@{/books/{id}(id=${book.getId()})}" class="book-link"
            th:text="${book.getName()} + ', ' + ${book.getAuthor()} + ', ' + ${book.getYear()}"></a>
     </div>
