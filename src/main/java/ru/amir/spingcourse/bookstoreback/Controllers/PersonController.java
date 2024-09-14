@@ -41,8 +41,8 @@ public class PersonController {
         model.addAttribute("people", peopleService.findAll());
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Object principal = authentication.getPrincipal();
-        PersonDetails threadPerson = (PersonDetails)principal;
-        model.addAttribute("role", threadPerson.getAuthorities().iterator().next());
+        String role = authentication.getAuthorities().iterator().next().getAuthority();
+        model.addAttribute("role", role);
         return "people/show";
     }
 
@@ -53,7 +53,7 @@ public class PersonController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Object principal = authentication.getPrincipal();
         PersonDetails threadPerson = (PersonDetails)principal;
-        model.addAttribute("role", threadPerson.getAuthorities().iterator().next());
+        model.addAttribute("role", authentication.getAuthorities().iterator().next().getAuthority());
         model.addAttribute("threadId", threadPerson.getId());
         model.addAttribute("personId", id);
         return "people/index";
@@ -67,15 +67,16 @@ public class PersonController {
 
     @PostMapping("/new")
     public String createPerson(@Valid @ModelAttribute("person") Person person,
-                               @RequestParam("image")MultipartFile image,
-                               BindingResult bindingResult){
-        if(bindingResult.hasErrors()){
+                               @RequestParam("image") MultipartFile image,
+                               BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
             return "people/new";
         }
         person.setPassword(peopleService.encodePassword(person.getPassword()));
         peopleService.createPerson(person, image);
         return "redirect:/people";
     }
+
 
     @GetMapping("/{id}/edit")
     public String editPersonPage(Model model, @PathVariable("id") int id){

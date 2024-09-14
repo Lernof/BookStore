@@ -119,8 +119,7 @@
         </div>
     </div>
     <hr/>
-    <!-- Rounded container for the "Create new Person" link -->
-    <a class="create-person-link" th:href="@{/people/new}">Create new Person</a>
+    <a th:if="${role=='ROLE_ADMIN'}" class="create-person-link" th:href="@{/people/new}">Create new Book</a>
 </div>
 </body>
 </html>

@@ -79,7 +79,8 @@
         <div class="form-group">
             <label for="description">Enter Description:</label>
             <textarea id="description" th:field="*{description}" class="form-control" style="min-height: 150px;" required></textarea>
-            <div style="color: red" th:if="${#fields.hasErrors('description')}" th:errors="*{description}">
+            <div style="color: red" th:if="${#fields.hasErrors('description')}"
+                 th:errors="*{description}">
                 Please provide a valid description.
             </div>
         </div>

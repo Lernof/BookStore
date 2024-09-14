@@ -32,7 +32,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests((authorize) -> authorize
                         .requestMatchers("/books/new").hasRole("ADMIN")
-                        .requestMatchers("/book/{id}/edit").hasRole("ADMIN")
+                        .requestMatchers("/people/new").hasRole("ADMIN")
                         .requestMatchers("/auth/register").permitAll()
                         .requestMatchers("/static/**").permitAll()
                         .requestMatchers("/images/**").permitAll()
